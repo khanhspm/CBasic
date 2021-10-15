@@ -27,5 +27,6 @@ int  main(){
     }
     fprintf(p, "%d", sum);
     fclose(p);
+    free(x);
     return 0;
 }
