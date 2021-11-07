@@ -10,7 +10,7 @@ typedef struct phoneaddress_t {
         phoneaddress phonearr[MAX_ELEMENT];
         int i,n, irc; 
     int reval = SUCCESS;
-    printf("How many contacts do you want to enter (<20)?");
+    printf("How many contacts do you want to enter (<20)?\n");
     scanf("%d", &n);
     for (i=0; i<n; i++){
         printf("name:");
