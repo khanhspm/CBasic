@@ -87,6 +87,7 @@ void xoa(void){
 					l = q;
 				}
 				free(p);
+				printf("Da xoa thanh cong!\n");
 			}
 		}
 	}
@@ -99,6 +100,7 @@ void main(){
 	    printf("2. Duyet va in ra danh sach\n");
 	    printf("3. Xoa dia chi nguoi dung theo ten\n");
 	    printf("0. De thoat\n");
+		printf("Ban chon: ");
 		scanf("%d", &a);
 		switch(a){
 		case 1: add(); break;

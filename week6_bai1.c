@@ -43,4 +43,5 @@ int main(){
     diachi a[100];
     Input(a,n);
     Search(a,x,n);
+    return 0;
 }
