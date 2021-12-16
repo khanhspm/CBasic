@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 struct Thongtinsinhvien{
     char id[10];
@@ -61,15 +62,22 @@ void addTail(node* head, ttsv data){
 }
 
 //Tim sinh vien co ID can tim
-int findsv(const node l, const ttsv x){
+void findsv(){
+    const node l;
+    ttsv x;
+    printf("Nhap ID sinh vien: ");
+    fflush(stdin);
+    gets(x.id);
     const struct Node* p = l;
     while(p != NULL){
-        if(p->data.id == x.id){
-            return 1;
+        if(strcmp(p->data.id, x.id) == 0){
+            printf("%10s ", p->data.name);
+            printf("%10s ", p->data.id);
+            printf("%4d ", p->data.grade);
+            printf("\n");
         }
         p= p->next;
     }
-    return 0;
 }
 
 //Change grade
@@ -131,36 +139,42 @@ int main(){
         fflush(stdin);
         printf("Ten: ");
         gets(data.name);
-        printf("id: ");
+        printf("ID: ");
         gets(data.id);
         printf("Diem: ");
         scanf("%d", &data.grade);
         addTail(&a, data);
     }
-    show(a);
-    /*int b;
+    
+    int lua_chon;
     do{
     printf("1. Them vao cuoi danh sach\n");
     printf("2. Tim sinh vien theo ID\n");
     printf("3. Doi diem\n");
     printf("4. Xoa sinh vien theo ID\n");
+    printf("5. Xuat danh sach sinh vien\n");
     printf("0. Thoat\n");
-    scanf("%d", &b);
-    switch(b){
-        case 1:
-            ttsv data1;
+    printf("Ban chon: ");
+    scanf("%d", &lua_chon);
+    switch(lua_chon){
+        /*case 1:
+            ttsv z;
             printf("Nhap thong tin sinh vien can them\n");
             fflush(stdin);
             printf("Ten: ");
-            gets(data1.name);
+            gets(z.name);
             printf("ID: ");
-            gets(data1.id);
+            gets(z.id);
             printf("Diem: ");
-            scanf("%d", &data1.grade);
-            addTail(&a, data1);
+            scanf("%d", &z.grade);
+            addTail(&a, z); */
+        case 2: 
+            findsv();
+        case 5:
+            show(a);
         case 0:
             break;
     }
-    }while(b!=0); */
+    }while(lua_chon!=0);
     return 0;
 }
