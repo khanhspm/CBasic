@@ -174,7 +174,7 @@ int main(){
             show(a);
         case 0:
             break;
-    }
-    }while(lua_chon!=0);
+    
+    }}while(lua_chon!=0);
     return 0;
 }
