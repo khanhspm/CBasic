@@ -118,8 +118,7 @@ void main(){
         switch(choose){
             case 1:
                    printf("Enter the name: ");
-                   fflush(stdin);
-                   gets(name);
+                   scanf("%s", &name);
                    printf("Enter the email: ");
                    scanf("%s", &email);
                    printf("Enter the telephone number: ");
