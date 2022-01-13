@@ -4,7 +4,7 @@
 
 struct node{
     char name[20];
-    char email[20];
+    char email[25];
     char tel[12];
     struct node *left, *right;
 };
@@ -99,20 +99,20 @@ void search(struct node *root, char em[]){
         search(root->right, em);
     }
     else{
-        printf("%s\t %5s\t %5s\n", root->name, root->email, root->tel);
+        printf("%s\t %20s\t %12s\n", root->name, root->email, root->tel);
     }
 }
 
 void main(){
     struct node *root = NULL;
     int choose;
-    char name[20], email[20], tel[12], email_search[20], email_delete[20];
+    char name[20], email[25], tel[12], email_search[25], email_delete[25];
     do{
         printf("1. Insert\n");
         printf("2. Search\n");
         printf("3. Delete\n");
         printf("4. List of book\n");
-        printf("0. Out");
+        printf("0. Out\n");
         printf("Your choice: ");
         scanf("%d", &choose);
         switch(choose){
@@ -136,7 +136,7 @@ void main(){
                    delete(root, email_delete);
                    break;
             case 4: 
-                   printf("%s\t %5s\t %5s\n", "Name", "Email", "Telephone number");
+                   printf("%s\t %10s\t %20s\n", "Name", "Email", "Telephone number");
                    Out(root);
                    break;
             case 0:
