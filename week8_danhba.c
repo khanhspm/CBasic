@@ -1,85 +1,148 @@
 #include<stdio.h>
-#include<string.h>
 #include<stdlib.h>
+#include<string.h>
 
-#define MAX 20
-
-typedef struct phoneaddress_t{
+struct node{
     char name[20];
-    char tel[20];
-    char email[30];
-} phoneaddress;
+    char email[20];
+    char tel[12];
+    struct node *left, *right;
+};
 
-typedef struct NODE{
-    phoneaddress key;
-    struct NODE* left;
-    struct NODE* right;
-} Nodetype;
-typedef struct NODE* TreeType;
-
-void MakeNULLtree(TreeType *T){
-    (*T) = NULL;
+// Thêm địa chỉ mới
+struct node* insert(struct node *root, char name[], char email[], char tel[]){
+    if(root == NULL){
+        struct node *temp = (struct node*)malloc(sizeof(struct node));
+        strcpy(temp->name, name);
+        strcpy(temp->email, email);
+        strcpy(temp->tel, tel);
+        temp->left = NULL;
+        temp->right = NULL;
+        return temp;
+    }
+    if(strcmp(email, root->email) <= 0){
+        root->left = insert(root->left, name, email, tel);
+    }else{
+        root->right = insert(root->right, name, email, tel);
+    }
+    return root;
 }
 
-int Emptytree(TreeType T){
-    return NULL; 
+// Xuất tất cả địa chỉ ra màn hình
+void Out(struct node *root){
+    if(root == NULL){
+        return;
+    }
+    Out(root->left);
+    printf("%s\t %5s\t %5s\n", root->name, root->email, root->tel);
+    Out(root->right);
 }
 
-TreeType makeNode(Nodetype *p, phoneaddress x){
-    p = (Nodetype*)malloc(sizeof(Nodetype));
-    p->key = x;
-    p->left = p->right = NULL;
-    return p;
+// Tìm địa chỉ có email nhỏ nhất
+struct node* FindMin(struct node *root){
+    while(root->left != NULL){
+        root = root->left;
+    }
+    return root;
 }
 
-TreeType Search(char* email,TreeType Root){
-    if(Root == NULL) return NULL;
-    else if(strcmp(Root->key.email, email) == 0) return Root;
-    else if(strcmp(Root->key.email, email) < 0) return Search(email, Root->right);
+// Xóa địa chỉ có email cần xóa
+struct node* delete(struct node *root, char em[]){
+    if(root == NULL){
+        return root;
+    }
+    else if(strcmp(em, root->email) < 0){
+        root->left = delete(root->left, em);
+    }
+    else if(strcmp(em, root->email) > 0){
+        root->right = delete(root->right, em);
+    }
     else{
-        return Search(email, Root->left);
+        if(root->left == NULL && root->right == NULL){
+            free(root);
+            root = NULL;
+        }
+        else if(root->left == NULL){
+            struct node *temp = root;
+            root = root->right;
+            free(temp);
+            temp = NULL;
+        }
+        else if(root->right == NULL){
+            struct node *temp = root;
+            root = root->left;
+            free(temp);
+            temp = NULL;
+        }
+        else{
+            struct node *temp = root;
+            root->left = FindMin(root);
+            root->left->right = root->right;
+            root = root->left;
+            strcpy(temp->name, root->name);
+            strcpy(temp->email, root->email);
+            strcpy(temp->tel, root->tel);
+            free(temp);
+            temp = NULL;
+        }
+        return root;
+    }
+    return root;
+}
+
+// Tìm kiếm địa chỉ có email cần tìm
+void search(struct node *root, char em[]){
+    if(strcmp(root->email, em) > 0){
+        search(root->left, em);
+    }
+    else if(strcmp(root->email, em) < 0){
+        search(root->right, em);
+    }
+    else{
+        printf("%s\t %5s\t %5s\n", root->name, root->email, root->tel);
     }
 }
 
-void InsertNode(phoneaddress x,TreeType *Root ){
-    if (*Root == NULL){
-        *Root=(Nodetype*) malloc(sizeof(Nodetype));
-        (*Root)->key = x;
-        (*Root)->left = NULL;
-        (*Root)->right = NULL;
-    }
-    else if (strcmp(((*Root)->key).email, x.email) > 0){
-        InsertNode(x, (*Root)->left);
-    }
-    else if (strcmp(((*Root)->key).email, x.email) > 0){
-        InsertNode(x,(*Root)->right);
-    }
-}    
-
-
-
-int main(){
-    FILE *fp;
-    phoneaddress phonearr[MAX];
-    TreeType root;
-    int i, n, irc;
-    n = 10;
-/*    if((fp = fopen("phonebook.dat", "rb")) == NULL){
-        printf("Can not open phonebook.dat !\n");
-        exit(1);
-    }
-    irc = fread(phonearr, sizeof(phoneaddress), n, fp);
-    fclose(fp);
-    */
-    for(i = 0; i < n; i++){
-        printf("Enter Name: ");
-        fflush(stdin);
-        gets(phonearr[i].name);
-        printf("Enter Telephone number: ");
-        gets(phonearr[i].tel);
-        printf("Enter Email: ");
-        gets(phonearr[i].email);
-        InsertNode(phonearr[i], root);
-    }
-    return 0;
+void main(){
+    struct node *root = NULL;
+    int choose;
+    char name[20], email[20], tel[12], email_search[20], email_delete[20];
+    do{
+        printf("1. Insert\n");
+        printf("2. Search\n");
+        printf("3. Delete\n");
+        printf("4. List of book\n");
+        printf("0. Out");
+        printf("Your choice: ");
+        scanf("%d", &choose);
+        switch(choose){
+            case 1:
+                   printf("Enter the name: ");
+                   fflush(stdin);
+                   gets(name);
+                   printf("Enter the email: ");
+                   scanf("%s", &email);
+                   printf("Enter the telephone number: ");
+                   scanf("%s", &tel);
+                   root = insert(root, name, email, tel);
+                   break;
+            case 2:
+                   printf("Enter the email need search: ");
+                   scanf("%s", &email_search);
+                   search(root, email_search);
+                   break;
+            case 3:
+                   printf("Enter the email need delete: ");
+                   scanf("%s", &email_delete);
+                   delete(root, email_delete);
+                   break;
+            case 4: 
+                   printf("%s\t %5s\t %5s\n", "Name", "Email", "Telephone number");
+                   Out(root);
+                   break;
+            case 0:
+                   exit(0);
+                   break;
+        }
+    }while(1);
 }
