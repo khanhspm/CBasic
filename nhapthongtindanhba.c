@@ -1,3 +1,5 @@
+// Nhập thông tin danh bạ
+
 #include<stdio.h>
 #include<string.h>
 #include<conio.h>
