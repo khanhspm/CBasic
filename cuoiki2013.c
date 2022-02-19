@@ -37,6 +37,7 @@ struct node* FC_min(struct node *root){
 
 // Tìm kiếm
 int tim_kiem(struct node *root, char fc[]){
+    if(root == NULL) return 0;
     if(root->left == NULL && root->right == NULL && strcmp(root->FC, fc) != 0){
         return 0;
     }
@@ -52,16 +53,15 @@ int tim_kiem(struct node *root, char fc[]){
 }
 
 // Thay đổi điểm
-void thay_doi_diem(struct node *root, struct node *temp, char fc[], int d){
-    temp = root;
-    if(strcmp(temp->FC, fc) > 0){
-        tim_kiem(temp->left, fc);
+void thay_doi_diem(struct node *root, char fc[], int d){
+    if(strcmp(root->FC, fc) > 0){
+        tim_kiem(root->left, fc);
     }
-    else if(strcmp(temp->FC, fc) < 0){
-        tim_kiem(temp->right, fc);
+    else if(strcmp(root->FC, fc) < 0){
+        tim_kiem(root->right, fc);
     }
-    else if(strcmp(temp->FC, fc) == 0){
-        temp->diem = d;
+    else if(strcmp(root->FC, fc) == 0){
+        root->diem = d;
     }
 }
 
@@ -106,9 +106,50 @@ void main(){
         if(w == EOF){
             break;
         }
+        printf("%s\t%s\t%d\t%d\n", t1, t2, s1, s2);
 
         // Tạo cây
-        
+        int tk1 = tim_kiem(root, t1);
+        int tk2 = tim_kiem(root, t2);
+
+        if(tk1 == 0){
+            if(s1 > s2){
+                root = them_node(root, t1, 3);
+            }
+            if(s1 == s2){
+                root = them_node(root, t1, 1);
+            }
+            if(s1 < s2){
+                root = them_node(root, t1, 0);
+            }
+        }
+        if(tk2 == 0){
+            if(s1 > s2){
+                root = them_node(root, t2, 0);
+            }
+            if(s1 == s2){
+                root = them_node(root, t2, 1);
+            }
+            if(s1 < s2){
+                root = them_node(root, t2, 3);
+            }
+        }
+        if(tk1 == 1){
+            if(s1 > s2){
+                thay_doi_diem(root, t1, root->diem + 3);
+            }
+            if(s1 == s2){
+                thay_doi_diem(root, t1, root->diem +1);
+            }
+        }
+        if(tk2 == 1){
+            if(s1 < s2){
+                thay_doi_diem(root, t2, root->diem + 3);
+            }
+            if(s1 == s2){
+                thay_doi_diem(root, t2, root->diem +1);
+            }
+        }
     }while(!feof(fp2));
     ket_qua(root);
 }
