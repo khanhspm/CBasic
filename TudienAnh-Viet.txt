@@ -1,0 +1,8 @@
+school	truong hoc
+i	toi
+you	ban
+very	nhieu
+computer	may tinh
+tree	cay
+stone	da
+and	va
